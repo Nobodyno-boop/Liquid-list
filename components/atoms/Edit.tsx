@@ -1,4 +1,4 @@
-import React, {FC, ReactChildren, useRef, useState} from "react";
+import React, {FC, useEffect, useMemo, useRef, useState} from "react";
 
 // <Edit></Edit>
 export type EditProps = {
@@ -9,12 +9,14 @@ export type EditProps = {
 }
 
 
-export const Edit : FC<EditProps> = ({value, placeHolder,children, onUpdate}) => {
-    const [edit,setEdit] = useState(value)
+export const Edit : FC<EditProps> = ({value = "", placeHolder,children, onUpdate}) => {
+    const [edit, setEdit] = useState(value)
+    const [editMode, setEditMode] = useState(false)
     const ref = useRef<HTMLDivElement>()
     const enabled = () => {
-        ref.current.contentEditable = 'true'
-        ref.current.focus()
+        // ref.current.contentEditable = 'true'
+        // ref.current.focus()
+        setEditMode(true)
     }
 
     const onFocus = () => {
@@ -22,16 +24,26 @@ export const Edit : FC<EditProps> = ({value, placeHolder,children, onUpdate}) =>
     }
 
     const save = (e) => {
+        ref.current.contentEditable = 'false'
         console.log("save")
-        console.log(e.target.textContent.length)
         setEdit(e.target.textContent)
     }
 
     return (
-        <div ref={ref} onDoubleClick={enabled} onFocus={onFocus} onBlur={save}>
-            {edit ? edit : (
-                <span className='text-base-300/20'>{placeHolder}</span>
-            )}
+        <div>
+            {
+                editMode ? (
+                    <div>
+                        <input type="text" placeholder={placeHolder} className="input input-bordered input-primary w-full max-w-xs" />
+                    </div>
+                ) : (
+                    <div ref={ref} onDoubleClick={enabled} onFocus={onFocus} onBlur={save}>
+                        {edit.length > 0 ? edit : (
+                            <span className='text-base-300/20'>{placeHolder}</span>
+                        )}
+                    </div>
+                )
+            }
         </div>
     )
 }
