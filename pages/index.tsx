@@ -13,7 +13,7 @@ export default function Home() {
               <div className="max-w-md">
                   <h1 className="text-5xl font-bold">Bienvenue sur LiquidList</h1>
                   <p className="py-6">Commencer votre liste !</p>
-                  <Link href='/list'>
+                  <Link href='list'>
                       <button className="btn btn-primary">GO !</button>
                   </Link>
               </div>
