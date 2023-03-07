@@ -1,24 +1,48 @@
-import {atom, mapTemplate} from "nanostores";
+import {action, actionFor, atom, mapTemplate} from "nanostores";
 import {nanoid} from "nanoid";
-import {persistentAtom} from "@nanostores/persistent";
+import {getCardTodos, UpdateLocalStorage} from "./card";
 
 export type Category = string
 
-export type Todo = {
+export type TodoState = {
     _id: string
     name: string
-    categories: Category[]
+    done: boolean
 }
-// https://github.com/nanostores/persistent#primitive-store
-export const todos = persistentAtom<Todo[]>('todos', [], {
-    encode: JSON.stringify,
-    decode: JSON.parse
-})
+
+export const todos = atom<TodoState[]>([])
+export const updateTodo = (cardId, todoId, update) => {
+    const cardsTodos = getCardTodos(cardId)
+    if(cardsTodos){
+        const obj = cardsTodos.find(v => v._id === todoId)
+        if(update?.name){
+            obj.name = update.name
+        }
+
+        if(update?.done){
+            obj.done = update.done
+        }
+
+        // Update list
+        // notify
+        UpdateLocalStorage()
+        return
+    }
+}
 
 
 // Need to use nanoid for field _id (already install)
 // https://github.com/ai/nanoid#nano-id
 
-export const createTodo = () => {
+export const createTodo = (idCard) => {
 // TODO: create todo
+    const cardTodos = getCardTodos(idCard)
+    const todo = {done: false, name: '', _id: nanoid(6)}
+    if(cardTodos) {
+        cardTodos.push(todo)
+        UpdateLocalStorage()
+        return todo
+    }
+
+    return null
 }
