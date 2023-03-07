@@ -2,7 +2,7 @@
 const isProd = process.env.NODE_ENV === 'production'
 
 const nextConfig = {
-  assetPrefix: isProd ? '/Liquid-list/' : '',
+  assetPrefix: isProd ? '/liquid-list/' : '',
   reactStrictMode: true
 }
 
