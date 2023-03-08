@@ -1,11 +1,12 @@
 import {persistentAtom} from "@nanostores/persistent";
-import {Category, TodoState} from "@/store/todo";
+import {TodoState} from "@/store/todo";
+import {TagState} from '@/store/tag';
 import {nanoid} from "nanoid";
 
 export type CardState = {
     _id: string
     name: string
-    categories: Category[]
+    tags: TagState[]
     todos : TodoState[]
 }
 
@@ -45,6 +46,23 @@ export const updateCardName = (id:string, name:string) => {
 export const createCard = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    getCards.set([...getCards.get(), {_id: nanoid(6) ,name:'',categories: [], todos: []}])
+    getCards.set([...getCards.get(), {_id: nanoid(6) ,name:'',tags: [], todos: []}])
+    return getCards.get()
+}
+
+export const addCardTag = (cardId: string, tag:TagState) => {
+    const cards = getCards.get();
+    const card = cards.find(card => card._id === cardId);
+
+    card?.tags.push(tag);
+    getCards.set([...cards.filter(c => c._id !== card._id), card]);
+    return getCards.get();
+}
+
+export const deleteCardTag = (cardId:string, tag:TagState) => {
+    const cards = getCards.get();
+    const card = cards.find(card => card._id === cardId);
+    card.tags = card.tags.filter(t => t._id !== tag._id);
+    getCards.set([...cards.filter(c => c._id !== card._id), card]);
     return getCards.get()
 }

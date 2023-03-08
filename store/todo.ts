@@ -2,8 +2,6 @@ import {action, actionFor, atom, mapTemplate} from "nanostores";
 import {nanoid} from "nanoid";
 import {getCardTodos, UpdateLocalStorage} from "./card";
 
-export type Category = string
-
 export type TodoState = {
     _id: string
     name: string

@@ -3,6 +3,7 @@ import {TodoList} from "@/components/molecules/todoList";
 import {FC, useState} from "react";
 import {CardState, getCardTodos, updateCardName} from "@/store/card";
 import {createTodo, TodoState} from "@/store/todo";
+import {TodoTags} from "@/components/molecules/ToDoTags";
 
 export const Card: FC<{state:CardState}> = ({state}) => {
     const [list, setList] = useState<TodoState[]>(state.todos)
@@ -16,6 +17,7 @@ export const Card: FC<{state:CardState}> = ({state}) => {
             setList([...todos])
         }
     }
+
 
   return (
       <div className="card w-96 bg-primary shadow-xl text-neutral">
@@ -44,6 +46,7 @@ export const Card: FC<{state:CardState}> = ({state}) => {
                   </div>
               )}
           </div>
+            <TodoTags card={state}/>
       </div>
   )
 }
