@@ -19,20 +19,24 @@ export const TodoTags = ({initTags}) => {
       setTodoTags(todoTags.filter((tag) => tag._id !== id));
     };
 
-    const newTag = () => {
+    const newTag = (e) => {
+        e.preventDefault();
         addTag(tagName);
         const newTag = allTags.find((t) => t.name === tagName);
         addTodoTag(newTag._id);
+        setTagName("");
     }
 
     return (
         <div className="card-actions justify-end">
-            { todoTags.map((tag, index) => <TagBadge key={tag._id} tag={tag} deleteTag={deleteTag}/>) }
+            { todoTags.map((tag) => <TagBadge key={tag._id} tag={tag} deleteTag={deleteTag} />) }
             <div className="dropdown dropdown-hover">
                 <label tabIndex={0} className="btn m-1">Add tag</label>
                 <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                     <li>
-                        <imput type="text" onChange={(e) => setTagName(e.target.value)}/> <button onClick={newTag}>+</button>
+                        <form onSubmit={(e) => newTag(e)}>
+                            <input  type="text" value={tagName} onChange={(e) => setTagName(e.target.value)}/>
+                        </form>
                     </li>
                         {
                         allTags.map((tag) =>
