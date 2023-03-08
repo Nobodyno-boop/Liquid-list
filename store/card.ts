@@ -1,5 +1,6 @@
 import {persistentAtom} from "@nanostores/persistent";
 import {Category, TodoState} from "@/store/todo";
+import {nanoid} from "nanoid";
 
 export type CardState = {
     _id: string
@@ -44,6 +45,6 @@ export const updateCardName = (id:string, name:string) => {
 export const createCard = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    getCards.set([...getCards.get(), {name:'',categories: [], todos: []}])
+    getCards.set([...getCards.get(), {_id: nanoid(6) ,name:'',categories: [], todos: []}])
     return getCards.get()
 }
