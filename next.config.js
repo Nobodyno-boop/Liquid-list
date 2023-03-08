@@ -6,7 +6,8 @@ const repo = 'liquid-list'
 const nextConfig = {
   assetPrefix: isProd ? `/${repo}/` : '',
   basePath: isProd ? `/${repo}` : '',
-  reactStrictMode: true
+  reactStrictMode: true,
+  output: "export"
 }
 
 module.exports = nextConfig
