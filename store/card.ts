@@ -24,8 +24,8 @@ export const getCards = persistentAtom<CardState[]>('cards', [], {
     }
 })
 
-export const UpdateLocalStorage = () => {
-    getCards.set(getCards.get())
+export const UpdateLocalStorage = (value: any = null) => {
+    getCards.set(value ? value : getCards.get())
 }
 export const getCardById = (id:string) => {
     return getCards.get().find(v => v._id === id)
@@ -48,6 +48,12 @@ export const createCard = () => {
     // @ts-ignore
     getCards.set([...getCards.get(), {_id: nanoid(6) ,name:'',tags: [], todos: []}])
     return getCards.get()
+}
+
+
+export const deleteCard = (cardId) => {
+    const cards = getCards.get().filter(card => card._id !== cardId)
+    UpdateLocalStorage(cards)
 }
 
 export const addCardTag = (cardId: string, tag:TagState) => {
