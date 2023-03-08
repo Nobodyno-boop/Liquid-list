@@ -1,35 +1,36 @@
-import { useState, useEffect } from "react";
-import { tags, addTag, removeTag } from '@/store/tag'
+import { useState} from "react";
+import { tags, addTag } from '@/store/tag'
 import { useStore } from '@nanostores/react'
 import {TagBadge} from "@/components/atoms/TagBadge";
-export const TodoTags = ({initTags}) => {
+import {nanoid} from "nanoid";
+import {addCardTag, deleteCardTag} from "@/store/card";
+
+export const TodoTags = ({card}) => {
     const allTags = useStore(tags);
-    const [todoTags, setTodoTags] = useState(initTags);
     const [tagName, setTagName] = useState("")
 
-    const addTodoTag = (id) => {
-        const todoTag = todoTags.find((t) => t._id === id);
-        if(!todoTag && id !== "") {
-            const tag = allTags.find((t) => t._id === id);
-            setTodoTags((value) => [...value, tag]);
-        }
+    const addTagInCard = (tag) => {
+        addCardTag(card._id, tag);
     };
 
-    const deleteTag = (id) => {
-      setTodoTags(todoTags.filter((tag) => tag._id !== id));
+    const deleteTag = (tag) => {
+        deleteCardTag(card._id, tag)
     };
 
     const newTag = (e) => {
         e.preventDefault();
-        addTag(tagName);
-        const newTag = allTags.find((t) => t.name === tagName);
-        addTodoTag(newTag._id);
+        const newTag = {
+            name: tagName,
+            _id: nanoid(5)
+        }
+        addTag(newTag);
+        addTagInCard(newTag);
         setTagName("");
     }
 
     return (
         <div className="card-actions justify-end">
-            { todoTags.map((tag) => <TagBadge key={tag._id} tag={tag} deleteTag={deleteTag} />) }
+            { card.tags.map((tag) => <TagBadge key={tag._id} tag={tag} deleteTag={deleteTag} />) }
             <div className="dropdown dropdown-hover">
                 <label tabIndex={0} className="btn m-1">Add tag</label>
                 <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
@@ -42,7 +43,7 @@ export const TodoTags = ({initTags}) => {
                         allTags.map((tag) =>
                             <li
                                 key={tag._id}
-                                onClick={() => addTodoTag(tag._id)}
+                                onClick={() => addTagInCard(tag)}
                             >
                                 <a>{tag.name}</a>
                             </li>)

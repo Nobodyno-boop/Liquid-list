@@ -3,6 +3,7 @@ import {TodoList} from "@/components/molecules/todoList";
 import {FC, useState} from "react";
 import {CardState, deleteCard, getCardTodos, updateCardName} from "@/store/card";
 import {createTodo, TodoState} from "@/store/todo";
+import {TodoTags} from "@/components/molecules/ToDoTags";
 
 export const Card: FC<{state:CardState}> = ({state}) => {
     const [list, setList] = useState<TodoState[]>(state.todos)
@@ -11,6 +12,7 @@ export const Card: FC<{state:CardState}> = ({state}) => {
     const onDeleteCard = () => {
         deleteCard(state._id)
     }
+
 
   return (
       <div className="card w-96 bg-neutral shadow-xl">
@@ -31,6 +33,7 @@ export const Card: FC<{state:CardState}> = ({state}) => {
                   <TodoList todos={list} cardId={state._id} />
               </div>
           </div>
+            <TodoTags card={state}/>
       </div>
   )
 }

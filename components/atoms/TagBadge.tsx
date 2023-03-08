@@ -1,16 +1,14 @@
 import React, { FC } from 'react';
+import {TagState} from "@/store/tag";
 
 export type TagProps = {
-    tag: {
-        name: string,
-        _id: string
-    }
-    deleteTag: (id: string) => void
+    tag: TagState
+    deleteTag: (tag: TagState) => void
 };
 
 export const TagBadge: FC<TagProps> = ({tag, deleteTag}) => {
     const removeTag = () => {
-        deleteTag(tag._id);
+        deleteTag(tag);
     }
 
     return (
