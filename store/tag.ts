@@ -8,7 +8,7 @@ export type TagState = {
     name: string,
 };
 
-export const tags = persistentAtom<TagState[]>('tags', [], {
+export const tagsAtom = persistentAtom<TagState[]>('tags', [], {
     encode (value) {
         return JSON.stringify(value)
     },
@@ -22,21 +22,21 @@ export const tags = persistentAtom<TagState[]>('tags', [], {
 });
 
 
-export const addTag = action(tags, 'addTag', (store, tag:TagState) => {
+export const addTag = action(tagsAtom, 'addTag', (store, tag:TagState) => {
     const tags = store.get();
     tags.push(tag)
     store.set(tags);
     return store.get();
 });
 
-export const removeTag = action(tags, 'removeTag', (store, id) => {
+export const removeTag = action(tagsAtom, 'removeTag', (store, id) => {
     const tags = store.get();
     const newStore = tags.filter((tag) => tag._id !== id);
     store.set(newStore);
     return store.get();
 });
 
-export const editTagName = action(tags, 'editTag', (store, name, id) => {
+export const editTagName = action(tagsAtom, 'editTag', (store, name, id) => {
     const tags = store.get();
     const tagArrayId = tags.findIndex(tag => tag._id === id);
     tags[tagArrayId].name = name;

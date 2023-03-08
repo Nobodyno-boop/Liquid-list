@@ -12,7 +12,7 @@ export const TagBadge: FC<TagProps> = ({tag, deleteTag}) => {
     }
 
     return (
-        <div className="badge badge-outline">
+        <div className="badge badge-outline uppercase font-semibold">
             {tag.name}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 stroke-current"
                 onClick={removeTag}

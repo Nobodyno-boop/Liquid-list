@@ -7,6 +7,8 @@ import {TodoTags} from "@/components/molecules/ToDoTags";
 
 export const Card: FC<{state:CardState}> = ({state}) => {
     const [list, setList] = useState<TodoState[]>(state.todos)
+    // const [tags, setTags] = useState<TodoState[]>(state.tags)
+
     const [title, setTitle] = useState(state.name)
 
     const onDeleteCard = () => {
@@ -33,7 +35,7 @@ export const Card: FC<{state:CardState}> = ({state}) => {
                   <TodoList todos={list} cardId={state._id} />
               </div>
           </div>
-            <TodoTags card={state}/>
+            <TodoTags card={state._id} tags={state.tags}/>
       </div>
   )
 }

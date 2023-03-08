@@ -57,18 +57,17 @@ export const deleteCard = (cardId) => {
 }
 
 export const addCardTag = (cardId: string, tag:TagState) => {
-    const cards = getCards.get();
-    const card = cards.find(card => card._id === cardId);
-
-    card?.tags.push(tag);
-    getCards.set([...cards.filter(c => c._id !== card._id), card]);
+    const card = getCardById(cardId)
+    if(!card.tags.find(exist => exist._id === tag._id)){
+        card.tags = [...card.tags, tag];
+        UpdateLocalStorage()
+    }
     return getCards.get();
 }
 
 export const deleteCardTag = (cardId:string, tag:TagState) => {
-    const cards = getCards.get();
-    const card = cards.find(card => card._id === cardId);
+    const card = getCardById(cardId)
     card.tags = card.tags.filter(t => t._id !== tag._id);
-    getCards.set([...cards.filter(c => c._id !== card._id), card]);
+    UpdateLocalStorage()
     return getCards.get()
 }
