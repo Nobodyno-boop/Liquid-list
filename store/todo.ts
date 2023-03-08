@@ -1,6 +1,6 @@
 import {action, actionFor, atom, mapTemplate} from "nanostores";
 import {nanoid} from "nanoid";
-import {getCardTodos, UpdateLocalStorage} from "./card";
+import {getCardById, getCardTodos, UpdateLocalStorage} from "./card";
 
 export type Category = string
 
@@ -27,6 +27,18 @@ export const updateTodo = (cardId, todoId, update) => {
         // notify
         UpdateLocalStorage()
         return
+    }
+}
+
+export const deleteTodo = (cardId, todoId) => {
+    const card = getCardById(cardId)
+    if(card){
+        console.log("a")
+        const ne = card.todos.filter(x => x._id !== todoId)
+        console.log(ne)
+        card.todos = ne
+
+        UpdateLocalStorage()
     }
 }
 
