@@ -1,10 +1,12 @@
 import {persistentAtom} from "@nanostores/persistent";
-import {Category, TodoState} from "@/store/todo";
+import {TodoState} from "@/store/todo";
+import {TagState} from '@/store/tag';
+import {nanoid} from "nanoid";
 
 export type CardState = {
     _id: string
     name: string
-    categories: Category[]
+    tags: TagState[]
     todos : TodoState[]
 }
 
@@ -22,8 +24,8 @@ export const getCards = persistentAtom<CardState[]>('cards', [], {
     }
 })
 
-export const UpdateLocalStorage = () => {
-    getCards.set(getCards.get())
+export const UpdateLocalStorage = (value: any = null) => {
+    getCards.set(value ? value : getCards.get())
 }
 export const getCardById = (id:string) => {
     return getCards.get().find(v => v._id === id)
@@ -44,6 +46,28 @@ export const updateCardName = (id:string, name:string) => {
 export const createCard = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    getCards.set([...getCards.get(), {name:'',categories: [], todos: []}])
+    getCards.set([...getCards.get(), {_id: nanoid(6) ,name:'',tags: [], todos: []}])
+    return getCards.get()
+}
+
+
+export const deleteCard = (cardId) => {
+    const cards = getCards.get().filter(card => card._id !== cardId)
+    UpdateLocalStorage(cards)
+}
+
+export const addCardTag = (cardId: string, tag:TagState) => {
+    const card = getCardById(cardId)
+    if(!card.tags.find(exist => exist._id === tag._id)){
+        card.tags = [...card.tags, tag];
+        UpdateLocalStorage()
+    }
+    return getCards.get();
+}
+
+export const deleteCardTag = (cardId:string, tag:TagState) => {
+    const card = getCardById(cardId)
+    card.tags = card.tags.filter(t => t._id !== tag._id);
+    UpdateLocalStorage()
     return getCards.get()
 }

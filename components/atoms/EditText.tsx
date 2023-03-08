@@ -10,10 +10,14 @@ export type EditProps = {
 
 
 export const EditText : FC<EditProps> = ({value = "", placeHolder, onUpdate, size = 'sm'}) => {
-    const [edit, setEdit] = useState(value)
+    const [edit, setEdit] = useState("")
     const [editMode, setEditMode] = useState(false)
     const ref = useRef<HTMLDivElement>()
     const refInput = useRef<HTMLInputElement>()
+
+    useEffect(() => {
+        setEdit(value)
+    }, [])
 
     const enabled = () => {
         setEditMode(true)
@@ -25,9 +29,6 @@ export const EditText : FC<EditProps> = ({value = "", placeHolder, onUpdate, siz
         }
     }, [editMode])
 
-    const onFocus = () => {
-        console.log("Focus")
-    }
 
     const save = () => {
         setEdit(refInput.current.value)
@@ -44,7 +45,7 @@ export const EditText : FC<EditProps> = ({value = "", placeHolder, onUpdate, siz
     }
 
     return (
-        <div>
+        <>
             {
                 editMode ? (
                     <div>
@@ -57,13 +58,13 @@ export const EditText : FC<EditProps> = ({value = "", placeHolder, onUpdate, siz
                                onKeyUp={key}/>
                     </div>
                 ) : (
-                    <div ref={ref} onDoubleClick={enabled} onFocus={onFocus}>
+                    <div ref={ref} onDoubleClick={enabled}>
                         {edit.length > 0 ? edit : (
-                            <span className='text-base-300/20'>{placeHolder}</span>
+                            <span className='text-primary/50'>{placeHolder}</span>
                         )}
                     </div>
                 )
             }
-        </div>
+        </>
     )
 }
